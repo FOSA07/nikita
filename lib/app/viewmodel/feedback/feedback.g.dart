@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login.user.dart';
+part of 'feedback.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginUserAccountNotifierHash() =>
-    r'1ff0b66ee1e07413c6f7f895adeebac78a1dad80';
+String _$getFeedbacksNotifierHash() =>
+    r'eb2d4718ee0198d0b5107981ef25a370fd2f6e99';
 
-/// See also [LoginUserAccountNotifier].
-@ProviderFor(LoginUserAccountNotifier)
-final loginUserAccountNotifierProvider =
-    AsyncNotifierProvider<LoginUserAccountNotifier, Object?>.internal(
-  LoginUserAccountNotifier.new,
-  name: r'loginUserAccountNotifierProvider',
+/// See also [GetFeedbacksNotifier].
+@ProviderFor(GetFeedbacksNotifier)
+final getFeedbacksNotifierProvider =
+    AsyncNotifierProvider<GetFeedbacksNotifier, Object?>.internal(
+  GetFeedbacksNotifier.new,
+  name: r'getFeedbacksNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$loginUserAccountNotifierHash,
+      : _$getFeedbacksNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$LoginUserAccountNotifier = AsyncNotifier<Object?>;
+typedef _$GetFeedbacksNotifier = AsyncNotifier<Object?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

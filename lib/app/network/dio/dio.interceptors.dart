@@ -11,7 +11,11 @@ class DioInterceptors extends Interceptor {
 
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    print("requesting....");
+    print(options.path);
+    print(_requiresToken(options.path));
     if (_requiresToken(options.path)) {
+      print("entering");
       final tokenResult = await _userStorageController.getToken();
 
       tokenResult.fold(
@@ -19,6 +23,7 @@ class DioInterceptors extends Interceptor {
           DioException(requestOptions: options, error: 'Failed to retrieve token: ${failure.message}'),
         ),
         (token) {
+          print(token);
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -64,9 +69,12 @@ class DioInterceptors extends Interceptor {
   }
 
   bool _requiresToken(String path) {
+    print(path);
     
     const tokenRequiredPaths = [
-      '/menu'
+      '/menu',
+      '/restaurant',
+      '/feedbacks'
     ];
 
     return tokenRequiredPaths.any((requiredPath) => path.startsWith(requiredPath));

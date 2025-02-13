@@ -55,7 +55,7 @@ class _FeaturesState extends ConsumerState<Features> {
                         identifier: Key(index.toString()),
                         onPressed: () {
                           if (index == 1){
-                            // ref.read(getMenuCategoriesProvider.notifier).getCategoriesList();
+                            ref.read(getMenuCategoriesProvider.notifier).getCategoriesList();
                           }
                           return ref.read(bottomNavIndexNotifierProvider.notifier).setIndex = index;
                         },

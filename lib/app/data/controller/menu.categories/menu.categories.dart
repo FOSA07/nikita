@@ -14,13 +14,30 @@ class MenuCategoriesController {
   final menuCategoryService = locator<MenuCategory>(instanceName: "MenuCategoryService");
 
   
-  Future<Either<Failure, List<Map>>> getMenuCategories() async {
+  Future<Either<Failure, List>> getMenuCategories() async {
 
     final response = await menuCategoryService.getMenuCategories();
 
     return response.fold(
       (failure) => Left(failure),
       (success) {
+        final List<dynamic> rawData = success.data["data"] as List<dynamic>;
+        final List<Map<String, dynamic>> mapList = rawData
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList();
+        return Right(mapList);
+      }
+    );
+  }
+
+  Future<Either<Failure, dynamic>> getDishes(String category) async {
+
+    final response = await menuCategoryService.getDishes(category: category);
+
+    return response.fold(
+      (failure) => Left(failure),
+      (success) {
+        
         return Right(success.data["data"]);
       }
     );

@@ -59,8 +59,8 @@ class DropDownField extends StatelessWidget {
       },
       onChanged: onChanged,
       // dropDownItemCount: 3,
-      listTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-            fontSize: 12,
+      listTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            // fontSize: 12,
             fontWeight: FontWeight.w600,
             color: Colors.black54,
           ),
@@ -93,10 +93,10 @@ class DropDownField extends StatelessWidget {
                 : dropDownValues.length,
             (index) => DropDownValueModel(
                 name: dropDownValues.isEmpty
-                    ? dropDownValueModel[index]["name"]!
+                    ? dropDownValueModel[index]["name"]
                     : dropDownValues[index],
                 value: dropDownValues.isEmpty
-                    ? dropDownValueModel[index]["map"]!
+                    ? dropDownValueModel[index]["map"]
                     : index))
       ],
     );

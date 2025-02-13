@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../view/screen/authentication/login.dart';
 import '../view/screen/features/features.dart';
+import '../view/screen/features/scanner.dart';
 import '../view/screen/onboard.dart';
 import 'auth.dart';
 import 'features.dart';
@@ -24,7 +25,7 @@ final GoRouter routes = GoRouter(
     GoRoute(
       path: '/nikita',
       name: 'nikita',
-      builder: (context, state) => const Features(),
+      builder: (context, state) => const Scanner(),
       routes: FeatureRoutes.getAuthRoutes(),
     ),
   ]

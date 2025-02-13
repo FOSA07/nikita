@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utils/constant/image.dart';
+import '../../../viewmodel/user/user.dart';
 import '../../helper/router.dart';
 import '../../widget/action.button.dart';
 
-class Profile extends StatelessWidget with ViewRouter {
+class Profile extends ConsumerWidget with ViewRouter {
   const Profile({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Padding(

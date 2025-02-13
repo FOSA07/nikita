@@ -43,6 +43,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   flutter_svg: ^2.0.17
   dropdown_textfield: ^1.2.0
+  qr_code_scanner_plus: ^2.0.9+1
 
 dev_dependencies:
   flutter_test:

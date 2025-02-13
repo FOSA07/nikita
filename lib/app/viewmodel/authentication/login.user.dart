@@ -7,6 +7,7 @@ import '../../model/authentication/login.dart';
 import '../../view/helper/router.dart';
 import '../../view/screen/miscellaneous/global.dialog.dart';
 import '../form/login.user.form.dart';
+import '../user/user.dart';
 
 part 'login.user.g.dart';
 
@@ -29,9 +30,13 @@ class LoginUserAccountNotifier extends _$LoginUserAccountNotifier
         (result) async { 
           // await ref.read(userProfileNotifierProvider.notifier).fetchUserProfile();
           // await ref.read(accountModeNotifierProvider.notifier).getAccountMode();
+          ref.read(userNotifierProvider.notifier).setUserNotifier = result;
           state = AsyncValue.data(result);
+          print(result.user.toString());
 
-          goto('/nikita');
+          // goto('/nikita/restaurant/10');
+          // goto('/nikita/chat');
+          goto('/nikita/nikita');
           
           // showAlertDialog(
           //   message: 'Login Successfull',

@@ -7,13 +7,14 @@ import '../view/screen/features/frame2.dart';
 import '../view/screen/features/item.info.dart';
 import '../view/screen/features/restaurant.dart';
 import '../view/screen/features/review.dart';
+import '../view/screen/features/scanner.dart';
 
 class FeatureRoutes {
   static List<RouteBase> getAuthRoutes() => <RouteBase>[
         GoRoute(
           path: 'nikita',
           name: 'feature',
-          builder: (context, state) => const Features(),
+          builder: (context, state) => const Scanner(),
         ),
         GoRoute(
           path: 'iteminfo',
@@ -21,9 +22,12 @@ class FeatureRoutes {
           builder: (context, state) => const ItemInfo(),
         ),
         GoRoute(
-          path: 'restaurant',
+          path: 'restaurant/:tableId',
           name: 'restaurant',
-          builder: (context, state) => const Restaurant(),
+          builder: (context, state) {
+            int tableId = int.parse(state.pathParameters["tableId"]!);
+            return Restaurant(tableId: tableId,);
+          },
         ),
         GoRoute(
           path: 'reviews',

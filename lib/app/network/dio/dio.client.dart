@@ -24,15 +24,29 @@ class DioClient {
   }) async {
     try {
       final result = await _dio.get(path, queryParameters: queryParameters);
-      result.data["code"] ??= "99";
+      
+      log(result.toString());
+      log("Here");
+      log(result.statusCode.toString());
+      
+      // result.data["code"] ??= "99";
       if (result.statusCode == 200 && result.data["status"] == "00") {
         return Right(result);
       }
+      log("passed");
       return Left(Failure(result.data["message"] ?? "Response Error"));
-    } on DioException catch (e) {
+    } on DioException catch (e, stackTrace) {
+      // print(e);
+      log(e.toString(),
+        stackTrace: stackTrace
+      );
       return Left(NetworkExceptions.handleDioException(e));
       // throw NetworkExceptions.handleDioException(e);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print(e);
+      log(e.toString(),
+        stackTrace: stackTrace
+      );
       // return Left(NetworkExceptions.handleDioException(DioException());
       return Left(Failure(e.toString(), exception: e));
     }

@@ -25,4 +25,21 @@ class MenuCategoryService extends MenuCategory {
       }
     });
   }
+
+  @override
+  Future<Either<Failure, Response>> getDishes({required String category}) async{
+
+    var response =
+        await DioClient().get('/menu/categories/$category');
+
+    return response.fold((failure) {
+      return Left(failure);
+    }, (result) {
+      try {
+        return Right(result);
+      } catch (e) {
+        return Left(Failure("An error occured", exception: e));
+      }
+    });
+  }
 }
