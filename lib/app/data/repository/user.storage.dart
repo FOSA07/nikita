@@ -9,6 +9,7 @@ class SecureStorageService {
 
   static const String _tokenKey = 'auth_token';
   static const String _userKey = 'user_key';
+  static const String _userId = 'user_id';
   static const String _appOnbording = 'app_onboarding';
 
   Future<Either<Failure, String>> storeToken(String token) async {
@@ -47,7 +48,43 @@ class SecureStorageService {
     }
   }
 
-  Future<Either<Failure, UserProfileModel>> storeUser(UserProfileModel user) async {
+  Future<Either<Failure, String>> storeId(String id) async {
+    try {
+      await _secureStorage.write(key: _userId, value: id);
+      return Right(id);
+    } catch (e) {
+      return Left(Failure('An error occurred while storing the token.', exception: e));
+    }
+  }
+
+  Future<Either<Failure, String?>> getId() async {
+    try {
+      final id = await _secureStorage.read(key: _userId);
+      return Right(id);
+    } catch (e) {
+      return Left(Failure('An error occurred while retrieving the token.', exception: e));
+    }
+  }
+
+  Future<Either<Failure, bool>> hasId() async {
+    try {
+      final id = await _secureStorage.read(key: _userId);
+      return Right(id != null);
+    } catch (e) {
+      return Left(Failure('An error occurred while checking for the token.', exception: e));
+    }
+  }
+
+  Future<Either<Failure, bool>> deleteId() async {
+    try {
+      await _secureStorage.delete(key: _userId);
+      return const Right(true);
+    } catch (e) {
+      return Left(Failure('An error occurred while deleting the token.', exception: e));
+    }
+  }
+
+  Future<Either<Failure, UserLoggedInModel>> storeUser(UserLoggedInModel user) async {
     try {
       await _secureStorage.write(key: _userKey, value: user.toString());
       return Right(user);
@@ -56,11 +93,11 @@ class SecureStorageService {
     }
   }
 
-  Future<Either<Failure, UserProfileModel>> getUser() async {
+  Future<Either<Failure, UserLoggedInModel>> getUser() async {
     try {
       final String? user = await _secureStorage.read(key: _userKey);
 
-      return user != null ? Right(UserProfileModel.fromRawJson(user)) : Left(Failure("No user found in repository"));
+      return user != null ? Right(UserLoggedInModel.fromJson(user)) : Left(Failure("No user found in repository"));
     } catch (e) {
       return Left(Failure('An error occurred while retrieving the token.', exception: e));
     }

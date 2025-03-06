@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 
 import '../view/screen/authentication/login.dart';
-import '../view/screen/features/features.dart';
 import '../view/screen/features/scanner.dart';
 import '../view/screen/onboard.dart';
 import 'auth.dart';

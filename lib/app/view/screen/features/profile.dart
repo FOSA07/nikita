@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utils/constant/image.dart';
-import '../../../viewmodel/user/user.dart';
 import '../../helper/router.dart';
 import '../../widget/action.button.dart';
 

@@ -7,7 +7,7 @@ part of 'feedback.dart';
 // **************************************************************************
 
 String _$getFeedbacksNotifierHash() =>
-    r'eb2d4718ee0198d0b5107981ef25a370fd2f6e99';
+    r'1aa8bda4874a1034ce3c8739b37502992661315a';
 
 /// See also [GetFeedbacksNotifier].
 @ProviderFor(GetFeedbacksNotifier)

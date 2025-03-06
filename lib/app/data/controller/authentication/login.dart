@@ -15,7 +15,7 @@ class LoginUserController {
 
   factory LoginUserController() => _instance ??= LoginUserController._();
 
-  Future<Either<Failure, UserProfileModel>> login(
+  Future<Either<Failure, UserLoggedInModel>> login(
       {required UserLoginModel userModel}) async {
     final loginService = locator<Authentication>(instanceName: "LoginService");
 
@@ -28,7 +28,9 @@ class LoginUserController {
         try{
           Map<String, dynamic> res = success.data["data"];
           log(res.toString());
-          return Right(UserProfileModel.fromJson(res));
+          print("done");
+          return Right(UserLoggedInModel.fromMap(res));
+          // return Right(res);
         } catch(e, stackTrace){
           log(e.toString(), stackTrace: stackTrace);
           return Left(Failure("Error"));

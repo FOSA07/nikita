@@ -11,8 +11,10 @@ class GetRestaurantNotifier extends _$GetRestaurantNotifier {
 
   Future getRestaurant (int table) async{
     var response =
-        await DioClient().get('/restaurant/tables/$table');
+        // await DioClient().get('/restaurant/tables/$table');
+        await DioClient().get('/tables/$table');
     log(response.toString());
+    print(response);
 
     return response.fold((failure) {
       return failure;
@@ -27,6 +29,7 @@ class GetRestaurantNotifier extends _$GetRestaurantNotifier {
     });
   }
 
+  @override
   Future build (int table) {
     return getRestaurant(table);
   }

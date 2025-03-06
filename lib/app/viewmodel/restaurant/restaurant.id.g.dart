@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login.user.dart';
+part of 'restaurant.id.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginUserAccountNotifierHash() =>
-    r'59f358dcaca2fc2cb91b501ed235dafa5cbd25cf';
+String _$restaurantIdNotifierHash() =>
+    r'66232de01c98fcd38d83b50156fd64bd150798b9';
 
-/// See also [LoginUserAccountNotifier].
-@ProviderFor(LoginUserAccountNotifier)
-final loginUserAccountNotifierProvider =
-    AsyncNotifierProvider<LoginUserAccountNotifier, Object?>.internal(
-  LoginUserAccountNotifier.new,
-  name: r'loginUserAccountNotifierProvider',
+/// See also [RestaurantIdNotifier].
+@ProviderFor(RestaurantIdNotifier)
+final restaurantIdNotifierProvider =
+    NotifierProvider<RestaurantIdNotifier, int>.internal(
+  RestaurantIdNotifier.new,
+  name: r'restaurantIdNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$loginUserAccountNotifierHash,
+      : _$restaurantIdNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$LoginUserAccountNotifier = AsyncNotifier<Object?>;
+typedef _$RestaurantIdNotifier = Notifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

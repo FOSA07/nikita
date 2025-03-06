@@ -11,11 +11,7 @@ class DioInterceptors extends Interceptor {
 
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    print("requesting....");
-    print(options.path);
-    print(_requiresToken(options.path));
     if (_requiresToken(options.path)) {
-      print("entering");
       final tokenResult = await _userStorageController.getToken();
 
       tokenResult.fold(
@@ -23,7 +19,6 @@ class DioInterceptors extends Interceptor {
           DioException(requestOptions: options, error: 'Failed to retrieve token: ${failure.message}'),
         ),
         (token) {
-          print(token);
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -39,25 +34,37 @@ class DioInterceptors extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
 
-    if (response.requestOptions.path == '/login' && response.statusCode == 200 && response.data["status"] == "00") {
-      final token = UserProfileModel.fromJson(response.data["data"]);
-      if (token.token != null) {
-        final tokenResult = await _userStorageController.storeToken(token.token.split('|').last);
+    if (response.requestOptions.path == '/auth/login' && response.statusCode == 200 && response.data["status_code"] == 200) {
+      final token = UserLoggedInModel.fromMap(response.data["data"]);
+      final tokenResult = await _userStorageController.storeToken(token.token);
+      final idResult = await _userStorageController.storeId(token.user.id);
 
-        tokenResult.fold(
-          (failure) {
-            handler.reject(DioException(
-              requestOptions: response.requestOptions,
-              response: response,
-              error: Exception('Failed to store token'),
-            ));
-            return;
-          },
-          (_) {
-          },
-        );
-      }
-    }
+      idResult.fold(
+        (failure) {
+          handler.reject(DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            error: Exception('Failed to store token'),
+          ));
+          return;
+        },
+        (_) {
+        },
+      );
+
+      // tokenResult.fold(
+      //   (failure) {
+      //     handler.reject(DioException(
+      //       requestOptions: response.requestOptions,
+      //       response: response,
+      //       error: Exception('Failed to store token'),
+      //     ));
+      //     return;
+      //   },
+      //   (_) {
+      //   },
+      // );
+        }
 
     handler.next(response);
   }
@@ -74,7 +81,10 @@ class DioInterceptors extends Interceptor {
     const tokenRequiredPaths = [
       '/menu',
       '/restaurant',
-      '/feedbacks'
+      '/feedbacks',
+      '/feedback',
+      '/questions',
+      '/tables'
     ];
 
     return tokenRequiredPaths.any((requiredPath) => path.startsWith(requiredPath));

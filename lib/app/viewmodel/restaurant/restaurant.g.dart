@@ -7,7 +7,7 @@ part of 'restaurant.dart';
 // **************************************************************************
 
 String _$getRestaurantNotifierHash() =>
-    r'940a80ed11017ee34ae174a2718a8ddc77d33652';
+    r'3a44cc145026e7173289c47edbaf75bb36218aa2';
 
 /// Copied from Dart SDK
 class _SystemHash {

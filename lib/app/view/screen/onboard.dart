@@ -25,12 +25,17 @@ class Onboard extends StatelessWidget with ViewRouter {
                         Expanded(
                           child: Column(
                             children: [
-                              SizedBox(
+                              Container(
                                 height: MediaQuery.of(context).size.height * 0.38,
                                 width: MediaQuery.of(context).size.width,
-                                child: Image.asset(
-                                  AppImages.onboardLogo,
-                                  height: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      AppImages.onboardLogo
+                                    ),
+                                    fit: BoxFit.cover, 
+                                    // opacity: 0.8, // Adjust transparency (0.0 - fully transparent, 1.0 - fully visible)
+                                  ),
                                 ),
                               )  
                             ],
@@ -44,11 +49,24 @@ class Onboard extends StatelessWidget with ViewRouter {
 
                     Positioned(
                       top: MediaQuery.of(context).size.height * 0.28,
-                      child: Image.asset(
-                        AppImages.onboardCenter,
+                      child: Container(
                         height: MediaQuery.of(context).size.height * 0.32,
-                        width: MediaQuery.of(context).size.width
-                      )
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              AppImages.onboardCenter
+                            ),
+                            fit: BoxFit.cover, // Adjust as needed
+                            // opacity: 0.8, // Adjust transparency (0.0 - fully transparent, 1.0 - fully visible)
+                          ),
+                        ),
+                      ),
+                      // child: Image.asset(
+                      //   AppImages.onboardCenter,
+                      //   height: MediaQuery.of(context).size.height * 0.32,
+                      //   width: MediaQuery.of(context).size.width
+                      // )
                     )
                   ],
                 ),
@@ -98,7 +116,8 @@ class Onboard extends StatelessWidget with ViewRouter {
                                     child: AppActionButton(
                                       text: 'Sign up', 
                                       onPressed: (){
-                                        goto('/auth/signup');
+                                        goto('/auth/signup', canBack: false);
+                                        // goto('/nikita/restaurant/10');
                                       },
                                       isLoading: false,
                                       textColor: Colors.black,
@@ -111,7 +130,9 @@ class Onboard extends StatelessWidget with ViewRouter {
                                       child: AppActionButton(
                                         text: 'Sign in',
                                         onPressed: (){
-                                          goto('/auth');
+                                          goto('/auth', canBack: false);
+                                          // goto('/nikita/nikita');
+                                          // goto('/nikita/restaurant/4');
                                         },
                                         isLoading: false,
                                       ),

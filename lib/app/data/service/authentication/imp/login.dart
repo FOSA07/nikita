@@ -12,11 +12,15 @@ class LoginService extends Authentication {
     required UserLoginModel userModel,
   }) async {
     var response =
-        await DioClient().post('/login', data: userModel.toJson());
+        await DioClient().post(
+          // '/login', 
+          "/auth/login",
+          data: userModel.toJson());
 
     return response.fold((failure) {
       return Left(failure);
     }, (result) {
+      
       try {
         return Right(result);
       } catch (e) {

@@ -6,23 +6,33 @@ part 'messages.g.dart';
 class MessageNotifier extends _$MessageNotifier {
   @override
   List<Map<String, dynamic>> build() {
-    // This is your initial state.
     return [
       {
         "sender": "CHATGPT",
-        "message": "Hi, I'm Anna. What would you like me to do for you today?"
+        "message": "Hi, I'm Anna. What would you like me to do for you today?",
+        "recommendation": false,
+        "recommended_dishes": []
       }
     ];
   }
 
   // Use this method to add a new message.
   void adder(Map<String, dynamic> map) {
-    // By reassigning the state, Riverpod notifies all listeners.
-    state = [...state, map];
+    // state = [...state, map];
+    state = [map, ...state];
   }
 
-  // Clear the chat.
   void clearChat() {
     state = [];
   }
+
+  void removeLast() {
+    if (state.isNotEmpty) {
+      final newState = [...state];
+      // newState.removeLast();
+      newState.removeAt(0);
+      state = newState;
+    }
+  }
+
 }

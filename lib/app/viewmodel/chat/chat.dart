@@ -3,6 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/exception/exception.dart';
+import '../../data/controller/storage/user.dart';
+import '../../network/dio/dio.client.dart';
+import '../restaurant/restaurant.id.dart';
 import 'messages.dart';
 
 part 'chat.g.dart';
@@ -14,15 +17,60 @@ class ChatNotifier extends _$ChatNotifier {
 
   Future chatMessage (String content) async {
 
-    var response =
-        await post('/chat/completions', data: {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-            {"role": "system", "content": "Your name is Anna, You are a wine sommelier giving great advice..."},
-            {"role": "user", "content": content}
-            // {"role": "user", "content": "What wine would you recommend with a steak dinner?"}
-        ],
-    });
+    int restaurantId = ref.read(restaurantIdNotifierProvider);
+    final messageNotifier = ref.read(messageNotifierProvider.notifier);
+    Either<Failure, String?> userId = await UserStorageController().getId();
+
+    if(userId.isRight()){
+      final actualId = userId.getOrElse(() => null);
+      print("User ID: $actualId");
+
+      var response =
+      await DioClient().post('/ai/chat', data: {
+        "user_id": int.parse(actualId!),
+        // "restaurant_id": restaurantId,
+        "restaurant_id": 4,
+        "message": content
+      });
+      // print(response);
+      messageNotifier.removeLast();
+    
+      return response.fold((failure) {
+        return failure;
+      }, (result) {
+        try {
+          print(result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]);
+          print(result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["recommendation"]);
+          print(result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["recommendedDishes"]);
+          messageNotifier.adder({
+            "sender": "USER",
+            "message": result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["message"],
+            "recommendation": false,
+            "recommended_dishes": []
+          });
+
+          messageNotifier.adder({
+            "sender": "CHATGPT",
+            "message": result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["response"],
+            "recommendation": result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["recommendation"],
+            "recommended_dishes": result.data["data"]["chatHistory"][result.data["data"]["chatHistory"].length - 1]["recommendedDishes"]
+          });
+          
+          return result.data;
+        } catch (e) {
+          return "An error occured";
+        }
+      });
+    }
+    // var response =
+    //     await post('/chat/completions', data: {
+    //     "model": "gpt-3.5-turbo",
+    //     "messages": [
+    //         {"role": "system", "content": "Your name is Anna, You are a wine sommelier giving great advice..."},
+    //         {"role": "user", "content": content}
+    //         // {"role": "user", "content": "What wine would you recommend with a steak dinner?"}
+    //     ],
+    // });
 
 
   //   if (response.statusCode == 200) {
@@ -36,26 +84,7 @@ class ChatNotifier extends _$ChatNotifier {
   //   }
   // }
 
-    print("this is result");
-    print(response);
-    print("End of result --------------------");
-
-    return response.fold((failure) {
-      return failure;
-    }, (result) {
-      // log(result.toString());
-      try {
-        ref.read(messageNotifierProvider.notifier).adder({
-          "sender": "CHATGPT",
-          "message": result.data['choices'][0]['message']['content']
-        });
-        print(result.data['choices'][0]['message']['content']);
-        return result.data;
-      } catch (e) {
-        // log("An Error Occured");
-        return "An error occured";
-      }
-    });
+    
   }
 
   Future<Either<Failure, Response>> post(
@@ -84,6 +113,8 @@ class ChatNotifier extends _$ChatNotifier {
 
   @override
   build () {
+    return null;
+  
 
   }
 }

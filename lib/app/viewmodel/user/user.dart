@@ -7,16 +7,21 @@ part 'user.g.dart';
 @Riverpod(keepAlive: true)
 class UserNotifier extends _$UserNotifier {
 
-  UserProfileModel? user;
+  UserLoggedInModel? user;
+  String name = "John";
 
   @override
-  UserProfileModel? build () {
+  UserLoggedInModel? build () {
     user;
+    return null;
   }
 
-  set setUserNotifier (UserProfileModel user) {
+  set setUserNotifier (UserLoggedInModel user) {
     this.user = user;
   }
 
   get getUser => user;
+
+  
+
 }

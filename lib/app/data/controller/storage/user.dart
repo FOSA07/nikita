@@ -30,11 +30,27 @@ class UserStorageController {
     return await _secureStorageService.deleteToken();
   }
 
-  Future<Either<Failure, UserProfileModel>> getUser() async {
+  Future<Either<Failure, String>> storeId(String id) {
+    return _secureStorageService.storeId(id);
+  }
+
+  Future<Either<Failure, String?>> getId() async {
+    return await _secureStorageService.getId();
+  }
+
+  Future<Either<Failure, bool>> hasId() async {
+    return await _secureStorageService.hasId();
+  }
+
+  Future<Either<Failure, bool>> deleteId() async {
+    return await _secureStorageService.deleteId();
+  }
+
+  Future<Either<Failure, UserLoggedInModel>> getUser() async {
     return await _secureStorageService.getUser();
   }
 
-  Future<Either<Failure, UserProfileModel>> storeUser(UserProfileModel user) async {
+  Future<Either<Failure, UserLoggedInModel>> storeUser(UserLoggedInModel user) async {
     return await _secureStorageService.storeUser(user);
   }
 

@@ -1,169 +1,139 @@
 import 'dart:convert';
 
-class UserProfileModel {
+class UserLoggedInModel {
+    final User user;
     final String token;
-    final String tokenType;
-    final Map<String, dynamic> user;
-    final Device device;
 
-    UserProfileModel({
-        required this.token,
-        required this.tokenType,
+    UserLoggedInModel({
         required this.user,
-        required this.device,
+        required this.token,
     });
 
-    UserProfileModel copyWith({
+    UserLoggedInModel copyWith({
+        User? user,
         String? token,
-        String? tokenType,
-        Map<String, dynamic>? user,
-        Device? device,
     }) => 
-        UserProfileModel(
-            token: token ?? this.token,
-            tokenType: tokenType ?? this.tokenType,
+        UserLoggedInModel(
             user: user ?? this.user,
-            device: device ?? this.device,
+            token: token ?? this.token,
         );
 
-    factory UserProfileModel.fromRawJson(String str) => UserProfileModel.fromJson(json.decode(str));
+    factory UserLoggedInModel.fromJson(String str) => UserLoggedInModel.fromMap(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+    String toJson() => json.encode(toMap());
 
-    factory UserProfileModel.fromJson(Map<String, dynamic> json) => UserProfileModel(
+    factory UserLoggedInModel.fromMap(Map<String, dynamic> json) => UserLoggedInModel(
+        user: User.fromMap(json["user"]),
         token: json["token"],
-        tokenType: json["token_type"],
-        user: json["user"],
-        device: Device.fromJson(json["device"]),
     );
 
-    Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toMap() => {
+        "user": user.toMap(),
         "token": token,
-        "token_type": tokenType,
-        "user": user,
-        "device": device.toJson(),
     };
 }
 
-class Device {
-    final int id;
-    final int userId;
-    final String deviceId;
-    final String deviceName; ///////////////
-    final String deviceType;
-    final String browser;
-    final String browserVersion; ////////////////
-    final String os;
-    final String osVersion;
-    final String ipAddress;
-    final Map<String, dynamic> lastUsedAt; ///////////
-    final String createdAt; ////////////////
-    final String updatedAt; ///////////////
+class User {
+    final String id;
+    final String name;
+    final String surname;
+    final String email;
+    final dynamic emailVerifiedAt;
+    final String role;
+    final String password;
+    final int status;
+    final dynamic lastLoginAt;
+    final dynamic lastLoginIp;
+    final bool termsAccepted;
+    final dynamic rememberToken;
+    final dynamic createdAt;
+    final dynamic updatedAt;
 
-    Device({
+    User({
         required this.id,
-        required this.userId,
-        required this.deviceId,
-        required this.deviceName,
-        required this.deviceType,
-        required this.browser,
-        required this.browserVersion,
-        required this.os,
-        required this.osVersion,
-        required this.ipAddress,
-        required this.lastUsedAt,
+        required this.name,
+        required this.surname,
+        required this.email,
+        required this.emailVerifiedAt,
+        required this.role,
+        required this.password,
+        required this.status,
+        required this.lastLoginAt,
+        required this.lastLoginIp,
+        required this.termsAccepted,
+        required this.rememberToken,
         required this.createdAt,
         required this.updatedAt,
     });
 
-    Device copyWith({
-        int? id,
-        int? userId,
-        String? deviceId,
-        String? deviceName,
-        String? deviceType,
-        String? browser,
-        String? browserVersion,
-        String? os,
-        String? osVersion,
-        String? ipAddress,
-        Map<String, dynamic>? lastUsedAt,
-        String? createdAt,
-        String? updatedAt,
+    User copyWith({
+        String? id,
+        String? name,
+        String? surname,
+        String? email,
+        dynamic emailVerifiedAt,
+        String? role,
+        String? password,
+        int? status,
+        dynamic lastLoginAt,
+        dynamic lastLoginIp,
+        bool? termsAccepted,
+        dynamic rememberToken,
+        dynamic createdAt,
+        dynamic updatedAt,
     }) => 
-        Device(
+        User(
             id: id ?? this.id,
-            userId: userId ?? this.userId,
-            deviceId: deviceId ?? this.deviceId,
-            deviceName: deviceName ?? this.deviceName,
-            deviceType: deviceType ?? this.deviceType,
-            browser: browser ?? this.browser,
-            browserVersion: browserVersion ?? this.browserVersion,
-            os: os ?? this.os,
-            osVersion: osVersion ?? this.osVersion,
-            ipAddress: ipAddress ?? this.ipAddress,
-            lastUsedAt: lastUsedAt ?? this.lastUsedAt,
+            name: name ?? this.name,
+            surname: surname ?? this.surname,
+            email: email ?? this.email,
+            emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+            role: role ?? this.role,
+            password: password ?? this.password,
+            status: status ?? this.status,
+            lastLoginAt: lastLoginAt ?? this.lastLoginAt,
+            lastLoginIp: lastLoginIp ?? this.lastLoginIp,
+            termsAccepted: termsAccepted ?? this.termsAccepted,
+            rememberToken: rememberToken ?? this.rememberToken,
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
         );
 
-    factory Device.fromRawJson(String str) => Device.fromJson(json.decode(str));
+    factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+    String toJson() => json.encode(toMap());
 
-    factory Device.fromJson(Map<String, dynamic> json) => Device(
+    factory User.fromMap(Map<String, dynamic> json) => User(
         id: json["id"],
-        userId: json["user_id"],
-        deviceId: json["device_id"].toString(),
-        deviceName: json["device_name"].toString(),
-        deviceType: json["device_type"].toString(),
-        browser: json["browser"].toString(),
-        browserVersion: json["browser_version"].toString(),
-        os: json["os"].toString(),
-        osVersion: json["os_version"].toString(),
-        ipAddress: json["ip_address"].toString(),
-        // lastUsedAt: LastUsedAt.fromJson(json["last_used_at"]),
-        lastUsedAt: {},
-        createdAt: DateTime.parse(json["created_at"]).toString(),
-        updatedAt: DateTime.parse(json["updated_at"]).toString(),
+        name: json["name"],
+        surname: json["surname"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        role: json["role"],
+        password: json["password"],
+        status: json["status"],
+        lastLoginAt: json["last_login_at"],
+        lastLoginIp: json["last_login_ip"],
+        termsAccepted: json["terms_accepted"],
+        rememberToken: json["remember_token"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
     );
 
-    Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toMap() => {
         "id": id,
-        "user_id": userId,
-        "device_id": deviceId,
-        "device_name": deviceName,
-        "device_type": deviceType,
-        "browser": browser,
-        "browser_version": browserVersion,
-        "os": os,
-        "os_version": osVersion,
-        "ip_address": ipAddress,
-        "last_used_at": lastUsedAt,
+        "name": name,
+        "surname": surname,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "role": role,
+        "password": password,
+        "status": status,
+        "last_login_at": lastLoginAt,
+        "last_login_ip": lastLoginIp,
+        "terms_accepted": termsAccepted,
+        "remember_token": rememberToken,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        // "last_used_at": lastUsedAt.toJson(),
-        // "created_at": createdAt.toIso8601String(),
-        // "updated_at": updatedAt.toIso8601String(),
-    };
-}
-
-class LastUsedAt {
-    LastUsedAt();
-
-    // LastUsedAt copyWith({
-    // }) => 
-    //     LastUsedAt(
-    //     );
-    LastUsedAt copyWith() => LastUsedAt();
-
-    factory LastUsedAt.fromRawJson(String str) => LastUsedAt.fromJson(json.decode(str));
-
-    String toRawJson() => json.encode(toJson());
-
-    factory LastUsedAt.fromJson(Map<String, dynamic> json) => LastUsedAt(
-    );
-
-    Map<String, dynamic> toJson() => {
     };
 }

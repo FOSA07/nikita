@@ -12,10 +12,15 @@ class CreateUserAccountService extends Authentication {
   @override
   Future<Either<Failure, Response>> createUser(
       {required CreateUserModel userModel}) async {
+    print("sign up house");
+    print(userModel.toJson().toString());
     var response = await DioClient().post(
-      '/register',
+      // '/register',
+      '/auth/signup',
       data: userModel.toJson(),
     );
+
+    print(response);
 
     return response.fold((failure) {
       log("This failure");

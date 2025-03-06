@@ -19,6 +19,8 @@ class LoginUserAccountNotifier extends _$LoginUserAccountNotifier
       state = const AsyncLoading();
       UserLoginModel userModel = ref.read(loginUserFormNotifierProvider);
       final response = await LoginUserController().login(userModel: userModel);
+
+      // print(response);
       
       response.fold(
         (failure) {
@@ -32,11 +34,11 @@ class LoginUserAccountNotifier extends _$LoginUserAccountNotifier
           // await ref.read(accountModeNotifierProvider.notifier).getAccountMode();
           ref.read(userNotifierProvider.notifier).setUserNotifier = result;
           state = AsyncValue.data(result);
-          print(result.user.toString());
+          // print(result.user.toString());
 
           // goto('/nikita/restaurant/10');
           // goto('/nikita/chat');
-          goto('/nikita/nikita');
+          goto('/nikita/nikita', canBack: false);
           
           // showAlertDialog(
           //   message: 'Login Successfull',

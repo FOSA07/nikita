@@ -9,32 +9,27 @@ import '../../data/controller/storage/user.dart';
 import '../config/base.options.dart';
 import 'dio.interceptors.dart';
 
-class DioClient {
+class DioClient2 {
   late final Dio _dio;
   final UserStorageController _userstorageController = UserStorageController();
 
-  DioClient() {
-    _dio = Dio(DioBaseOptions.options);
+  DioClient2() {
+    _dio = Dio(DioBaseOptions2.options);
     _dio.interceptors.add(DioInterceptors(_userstorageController));
   }
 
   Future<Either<Failure, Response>> get(
     String path, {
-    Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final result = await _dio.get(path, data: data, queryParameters: queryParameters);
+      final result = await _dio.get(path, queryParameters: queryParameters);
       
       log(result.toString());
       log("Here");
       log(result.statusCode.toString());
-      print(result);
       
-      if (result.statusCode == 200 && result.data["status_code"] == 200) {
-        return Right(result);
-      }
-      if (result.statusCode == 201 && result.data["status_code"] == 201) {
+      if (result.statusCode == 200 && result.data["status"] == "00") {
         return Right(result);
       }
       log("passed");
@@ -61,12 +56,8 @@ class DioClient {
     try {
       final result =
           await _dio.post(path, data: data, queryParameters: queryParameters);
-      print("dio $result");
       
-      if (result.statusCode == 200 && result.data["status_code"] == 200) {
-        return Right(result);
-      }
-      if (result.statusCode == 201 && result.data["status_code"] == 201) {
+      if (result.statusCode == 200 && result.data["status"] == "00") {
         return Right(result);
       }
       if(path == '/register' && result.data["status"] == "99" && result.data["message"].toString().toLowerCase() == "validation failed") {
@@ -78,7 +69,6 @@ class DioClient {
 
       log('error = $e');
       log('Endpoint = ${e.requestOptions.uri.toString()}');
-      print('error = $e');
       if (e.response != null) {
         Map? error = e.response?.data["errors"] ??
             e.response?.data["message"] ??
@@ -90,7 +80,6 @@ class DioClient {
 
       return Left(NetworkExceptions.handleDioException(e));
     } catch (e) {
-      print(e);
       return Left(Failure(e.toString(), exception: e));
     }
   }

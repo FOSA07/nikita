@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 
 import '../view/screen/features/chat.dart';
-import '../view/screen/features/features.dart';
 import '../view/screen/features/frame1.dart';
 import '../view/screen/features/frame2.dart';
 import '../view/screen/features/item.info.dart';
@@ -17,9 +16,15 @@ class FeatureRoutes {
           builder: (context, state) => const Scanner(),
         ),
         GoRoute(
-          path: 'iteminfo',
+          path: 'iteminfo/:name/:image/:price/:description',
           name: 'iteminfo',
-          builder: (context, state) => const ItemInfo(),
+          builder: (context, state) {
+            String name = state.pathParameters["name"]!;
+            String image = state.pathParameters["image"]!;
+            String price = state.pathParameters["price"]!;
+            String description = state.pathParameters["description"]!;
+            return ItemInfo(name: name, image: image, price: price, description: description);
+          },
         ),
         GoRoute(
           path: 'restaurant/:tableId',

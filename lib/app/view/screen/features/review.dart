@@ -27,7 +27,7 @@ class _ReviewsState extends ConsumerState<Reviews> with ViewRouter {
       body: SafeArea(
         child: Background(
 
-          child: Container(
+          child: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Padding(
@@ -75,25 +75,25 @@ class _ReviewsState extends ConsumerState<Reviews> with ViewRouter {
                             )
                           ],
                         ),
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFC53D),
-                            borderRadius: BorderRadius.all(Radius.circular(12))
-                          ),
-                          child: Row(
-                            spacing: 5,
-                            children: [
-                            SvgPicture.asset(AppImages.rating),
-                            Text(
-                              '5.0',
-                              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                color: Colors.white
-                              ),
-                            )
-                          ],),
-                        )
+                        // Container(
+                        //   padding: EdgeInsets.all(15),
+                        //   height: double.infinity,
+                        //   decoration: BoxDecoration(
+                        //     color: Color(0xFFFFC53D),
+                        //     borderRadius: BorderRadius.all(Radius.circular(12))
+                        //   ),
+                        //   child: Row(
+                        //     spacing: 5,
+                        //     children: [
+                        //     SvgPicture.asset(AppImages.rating),
+                        //     Text(
+                        //       '5.0',
+                        //       style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        //         color: Colors.white
+                        //       ),
+                        //     )
+                        //   ],),
+                        // )
                       ],
                     ),
                   ),
