@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,14 +57,18 @@ class _ChatState extends ConsumerState<Chat> with ViewRouter {
   Widget build(BuildContext context) {
     final messages = ref.watch(messageNotifierProvider.select((state) => state));
     final getAllChat = ref.watch(getChatNotifierProvider);
-    ValueNotifier update = ValueNotifier(ref.watch(messageNotifierProvider));
-    int val = 0;
 
     return Scaffold(
       backgroundColor: Color(0xFFFFE2E8),
+      
       body: SafeArea(
-        child: SizedBox(
+        child: Container(
           width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage(
+              'assets/png/bgimg.jpg',
+            ), fit: BoxFit.cover)
+          ),
           child: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
@@ -100,17 +106,21 @@ class _ChatState extends ConsumerState<Chat> with ViewRouter {
                                 )
                               ],
                             ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF6C1233),
-                                borderRadius: BorderRadius.all(Radius.circular(12))
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: SvgPicture.asset(AppImages.user, color: Colors.white,),
+                            GestureDetector(
+                              onTap: () {
+                                goto('/nikita/nikita', canBack: false);
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                // padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF6C1233),
+                                  borderRadius: BorderRadius.all(Radius.circular(12))
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.qr_code_2, color: Colors.white),
+                                ),
                               ),
                             )
                           ],
@@ -130,6 +140,7 @@ class _ChatState extends ConsumerState<Chat> with ViewRouter {
                                 controller: _scrollController,
                                 reverse: true,
                                 shrinkWrap: true,
+                                addAutomaticKeepAlives: false,
                                 itemCount: messages.length,
                                 itemBuilder: (context, index) {
                                   final message = messages[index];
@@ -139,75 +150,87 @@ class _ChatState extends ConsumerState<Chat> with ViewRouter {
                                     children: [
                                       if (index == 0) const SizedBox(height: 15),
                                       MessageBox(from: message["sender"].toString().toLowerCase(), message: message["message"]),
-                                      if(message["recommendation"] == true) Align(
-                                        alignment: AlignmentDirectional.centerStart,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            // print(message["recommended_dishes"][0]);
-                                            print(message["recommended_dishes"][0]);
-                                            goto(
-                                              '/nikita/iteminfo/${message["recommended_dishes"][0]["name"].toString()}/${message["recommended_dishes"][0]["image"].toString()}/${message["recommended_dishes"][0]["price"].toString()}/${message["recommended_dishes"][0]["description"].toString()}'
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 104,
-                                            width: MediaQuery.of(context).size.width * 0.6,
-                                            margin: EdgeInsets.only(top: 30),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(Radius.circular(16))
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  width: MediaQuery.of(context).size.width * 0.2,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        message["recommended_dishes"][0]["image"].toString() == "null" ? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836' : message["recommended_dishes"][0]["image"].toString(),
-                                                      ),
-                                                      fit: BoxFit.cover, // Adjust as needed
-                                                      opacity: 0.8, // Adjust transparency (0.0 - fully transparent, 1.0 - fully visible)
-                                                    ),
-                                                    borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(16),
-                                                      bottomLeft: Radius.circular(16)
-                                                    )
-                                                  ),
-                                                ),
-                                                Expanded(
+                                      
+                                      if(message["recommendation"] == true) Column(
+                                        children: [
+                                          SizedBox(height: 30,),
+                                          Align(
+                                            alignment: AlignmentDirectional.centerStart,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                goto(
+                                                  '/nikita/iteminfo/${message["recommended_dishes"][0]["name"].toString()}/${message["recommended_dishes"][0]["image"].toString()}/${message["recommended_dishes"][0]["price"].toString()}/${message["recommended_dishes"][0]["description"].toString()}'
+                                                );
+                                              },
+                                              child: ClipRRect(
+                                                child: BackdropFilter(
+                                                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                                                   child: Container(
-                                                    padding: const EdgeInsets.all(16),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                    height: 104,
+                                                    width: MediaQuery.of(context).size.width * 0.6,
+                                                    
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withOpacity(0.2),
+                                                      borderRadius: BorderRadius.all(Radius.circular(16))
+                                                    ),
+                                                    child: Row(
                                                       children: [
-                                                        Text(
-                                                          '${message["recommended_dishes"][0]["price"].toString()} €',
-                                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                                            color: Color(0xFF0E0F11),
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w900
+                                                        Container(
+                                                          width: MediaQuery.of(context).size.width * 0.2,
+                                                          decoration: BoxDecoration(
+                                                            
+                                                            image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                message["recommended_dishes"][0]["image"].toString() == "null" ? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836' : message["recommended_dishes"][0]["image"].toString(),
+                                                              ),
+                                                              fit: BoxFit.cover, // Adjust as needed
+                                                              opacity: 0.8, // Adjust transparency (0.0 - fully transparent, 1.0 - fully visible)
+                                                            ),
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(16),
+                                                              bottomLeft: Radius.circular(16)
+                                                            )
                                                           ),
                                                         ),
                                                         Expanded(
-                                                          child: SingleChildScrollView(
-                                                            child: Text(
-                                                              message["recommended_dishes"][0]["name"].toString(),
-                                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                                                color: Color(0xFF000000),
-                                                                // fontSize: 16
-                                                              ),
+                                                          child: Container(
+                                                            padding: const EdgeInsets.all(16),
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  '${message["recommended_dishes"][0]["price"].toString()} €',
+                                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                                    // color: Color(0xFF0E0F11),
+                                                                    color: Colors.white,
+                                                                    fontSize: 14,
+                                                                    fontWeight: FontWeight.w900
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child: SingleChildScrollView(
+                                                                    child: Text(
+                                                                      message["recommended_dishes"][0]["name"].toString(),
+                                                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                                        // color: Color(0xFF000000),
+                                                                        color: Colors.white,
+                                                                        // fontSize: 16
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
                                                             ),
-                                                          ),
+                                                          )
                                                         )
                                                       ],
                                                     ),
-                                                  )
-                                                )
-                                              ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                       const SizedBox(height: 30),
                                       // ValueListenableBuilder(
@@ -337,28 +360,34 @@ class MessageBox extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              width: MediaQuery.of(context).size.width *0.6,
-              decoration: BoxDecoration(
-                color: Color(0xFFA44B6F),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                  topRight: Radius.circular(16)
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(  
+                  padding: const EdgeInsets.all(16),
+                  width: MediaQuery.of(context).size.width *0.6,
+                  decoration: BoxDecoration(
+                    // color: Color(0xFFA44B6F),
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: Colors.white
+                  child: Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Colors.white
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -366,8 +395,13 @@ class MessageBox extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 20,
-              child: CustomPaint(
-                painter: BubbleTailPainter(color: Color(0xFFA44B6F), isLeft: false),
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: CustomPaint(
+                    painter: BubbleTailPainter(color: Colors.white.withOpacity(0.2), isLeft: false),
+                  ),
+                ),
               ),
             ),
           ],
@@ -377,28 +411,37 @@ class MessageBox extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              width: MediaQuery.of(context).size.width *0.6,
-              decoration: BoxDecoration(
-                color: Color(0xFFD92C4A), // Adjust to match your color
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                  topRight: Radius.circular(16)
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(16)
               ),
-              child: Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: Colors.white
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  width: MediaQuery.of(context).size.width *0.6,
+                  decoration: BoxDecoration(
+                    // color: Color(0xFFD92C4A), // Adjust to match your color
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                      topRight: Radius.circular(16)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Colors.white
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -406,8 +449,13 @@ class MessageBox extends StatelessWidget {
             Positioned(
               bottom: 0,
               left: 0,
-              child: CustomPaint(
-                painter: BubbleTailPainter(color: Color(0xFFD92C4A), isLeft: true),
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: CustomPaint(
+                    painter: BubbleTailPainter(color: Colors.white.withOpacity(0.2), isLeft: true),
+                  ),
+                ),
               ),
             ),
           ],

@@ -100,70 +100,77 @@ class _ReviewsState extends ConsumerState<Reviews> with ViewRouter {
                   const SizedBox(height: 10,),
                   
                   Expanded(
-                    child: getFeedbacks.when(
-                      data: (data) {
-                        
-                        if (data is List) {
-                          totalVotings.value = data.length;
-                        return ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) => Column(
-                          children: [
+                    child: Container(
+                      // decoration: BoxDecoration(
+                      //   image: DecorationImage(image: AssetImage(
+                      //     'assets/png/bgimg.jpg',
+                      //   ), fit: BoxFit.cover)
+                      // ),
+                      child: getFeedbacks.when(
+                        data: (data) {
+                          
+                          if (data is List) {
+                            totalVotings.value = data.length;
+                          return ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (context, index) => Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                spacing: 13,
+                                children: List.generate(
+                                  data.length, 
+                                  (index) {
+                                    return ReviewCard(
+                                    comment: data[index]["content"],
+                                    name: data[index]["user_name"]
+                                  );
+                                  }
+                                ),
+                              )
+                            ],
+                          ));
+                          } else {
+                            return Center(child: getFeedbacks.isLoading ?
                             const SizedBox(
                               height: 20,
-                            ),
-                            Column(
-                              spacing: 13,
-                              children: List.generate(
-                                data.length, 
-                                (index) {
-                                  return ReviewCard(
-                                  comment: data[index]["content"],
-                                  name: data[index]["user_name"]
-                                );
-                                }
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
                               ),
-                            )
-                          ],
-                        ));
-                        } else {
-                          return Center(child: getFeedbacks.isLoading ?
-                          const SizedBox(
+                            ) : TextButton(
+                              onPressed: () => ref.invalidate(getFeedbacksNotifierProvider),
+                              // style: const ButtonStyle(backgroundColor: 
+                              //   WidgetStatePropertyAll(Color.fromARGB(255, 208, 230, 249))),
+                              child: const Text("reload"),  
+                            ));
+                          }
+                        },
+                        error: (error, stackTrace) => Center(child: getFeedbacks.isLoading ?
+                            const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ) : TextButton(
+                              onPressed: () => ref.invalidate(getFeedbacksNotifierProvider),
+                              style: const ButtonStyle(backgroundColor: 
+                                WidgetStatePropertyAll(Color.fromARGB(255, 208, 230, 249))),
+                              child: const Text("reload"),  
+                            )),
+                        loading: () => const Center(
+                          child: SizedBox(
                             height: 20,
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ),
-                          ) : TextButton(
-                            onPressed: () => ref.invalidate(getFeedbacksNotifierProvider),
-                            // style: const ButtonStyle(backgroundColor: 
-                            //   WidgetStatePropertyAll(Color.fromARGB(255, 208, 230, 249))),
-                            child: const Text("reload"),  
-                          ));
-                        }
-                      },
-                      error: (error, stackTrace) => Center(child: getFeedbacks.isLoading ?
-                          const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ) : TextButton(
-                            onPressed: () => ref.invalidate(getFeedbacksNotifierProvider),
-                            style: const ButtonStyle(backgroundColor: 
-                              WidgetStatePropertyAll(Color.fromARGB(255, 208, 230, 249))),
-                            child: const Text("reload"),  
-                          )),
-                      loading: () => const Center(
-                        child: SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          )
                         )
-                      )
+                      ),
                     ),
                   ),
                 ],
